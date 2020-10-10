@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+
 import 'package:qrreaderapp/src/adress_page.dart';
 import 'package:qrreaderapp/src/map_page.dart';
 
@@ -31,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   FloatingActionButton _floatingActionButton(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.filter_center_focus),
-      onPressed: () {},
+      onPressed: _scanQR,
       backgroundColor: Theme.of(context).primaryColor,
     );
   }
@@ -61,5 +63,22 @@ class _HomePageState extends State<HomePage> {
         });
       },
     );
+  }
+
+  _scanQR() async {
+    ScanResult futureResult;
+    try {
+      futureResult = await BarcodeScanner.scan();
+    } catch(e) {
+      print('-----------------');
+      print('Error!!');
+      print(e.toString());
+      print('-----------------');
+    }
+
+    if (futureResult.rawContent != null) {
+      print('Tenemos informacion');
+      print('Result: ${futureResult.rawContent}');
+    }
   }
 }
